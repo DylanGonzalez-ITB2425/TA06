@@ -1,0 +1,113 @@
+import numpy as np
+import os
+
+# Leer el archivo con formato específico
+def load_data(file_path):
+    """Carga el archivo y devuelve los datos como una lista de diccionarios."""
+    data = []
+    with open(file_path, 'r') as file:
+        lines = file.readlines()[2:]  # Ignorar la primera línea si es un encabezado
+        for line in lines:
+            parts = line.split()
+            try:
+                record = {
+                    'ID': parts[0],
+                    'Year': int(parts[1]),
+                    'Month': int(parts[2]),
+                    'Days': [float(x) if x != '-999' else None for x in parts[3:]]  # Cambiado a float
+                }
+                data.append(record)
+            except ValueError as e:
+                print(f"Error al procesar la línea: {line}. Error: {e}")
+    return data
+
+# Manejo de valores faltantes
+def handle_missing_values(data):
+    """Reemplaza valores faltantes o inválidos."""
+    for record in data:
+        record['Days'] = [x if x is not None else -999 for x in record['Days']]
+    return data
+
+# Estadísticas descriptivas
+def generate_statistics(data):
+    """Genera estadísticas descriptivas para los datos."""
+    total_values = 0
+    missing_values = 0
+
+    for record in data:
+        total_values += len(record['Days'])
+        missing_values += sum(1 for x in record['Days'] if x == -999)
+
+    return total_values, missing_values
+
+# Procesar y analizar archivos en una carpeta específica
+def process_files_in_folder(folder_path):
+    """Procesa todos los archivos en una carpeta específica."""
+    total_files = 0
+    total_lines = 0
+    total_values = 0
+    missing_values = 0
+
+    if os.path.exists(folder_path):
+        archivos = os.listdir(folder_path)
+        for archivo in archivos:
+            archivo_path = os.path.join(folder_path, archivo)
+
+            # Filtrar solo archivos .dat
+            if os.path.isfile(archivo_path) and archivo.endswith('.dat'):
+                try:
+                    print(f"Procesando el archivo: {archivo}")
+                    data = load_data(archivo_path)
+                    data = handle_missing_values(data)
+
+                    file_total_values, file_missing_values = generate_statistics(data)
+
+                    total_files += 1
+                    total_lines += len(data)
+                    total_values += file_total_values
+                    missing_values += file_missing_values
+
+                except Exception as e:
+                    print(f"Error procesando el archivo {archivo}: {e}")
+    else:
+        print(f"La carpeta {folder_path} no existe.")
+        return
+
+    missing_percentage = (missing_values / total_values) * 100 if total_values > 0 else 0
+
+    print("""
+========================================================
+ANÁLISIS DE PRECIPITACIÓN - INFORME COMPLETO
+========================================================
+
+1. ESTADÍSTICAS GENERALES
+--------------------------------------------------------
+Total de valores procesados: {total_values:,}
+Valores faltantes (-999): {missing_values:,}
+Porcentaje de datos faltantes: {missing_percentage:.2f}%
+Archivos procesados: {total_files:,}
+Líneas procesadas: {total_lines:,}
+""".format(
+        total_values=total_values,
+        missing_values=missing_values,
+        missing_percentage=missing_percentage,
+        total_files=total_files,
+        total_lines=total_lines
+    ))
+
+  # Imprimir la tabla de errores
+    error_table = []  # Define the error_table variable as an empty list
+    if error_table:
+        print("\n========================================================")
+        print("TABLA DE ERRORES")
+        print("========================================================")
+        print("{:<30} {:<50} {:<10}".format("Archivo", "Fallo", "Línea"))
+        print("-" * 90)
+        for error in error_table:
+            print("{:<30} {:<50} {:<10}".format(error['Archivo'], error['Fallo'], error['Línea']))
+    else:
+        print("\nNo se encontraron errores.")
+
+# Ruta de la carpeta a analizar
+carpeta = 'TA06/E01/eje'
+process_files_in_folder(carpeta)
