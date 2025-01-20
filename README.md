@@ -9,7 +9,7 @@
 ![API2](https://github.com/user-attachments/assets/eac65133-a99a-47d3-9113-691cfbce5fce)
 
 
-*Correo de la API KEY generada*
+*Sol·licitem la API KEY generada*
 
 ![API3](https://github.com/user-attachments/assets/0a2ebc0e-c0aa-4a77-9d9c-faf9918af72e)
 
