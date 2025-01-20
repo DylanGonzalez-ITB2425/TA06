@@ -18,3 +18,6 @@
 *En el centre de descarrega de la pagina oficial de la AEMET es descarrega el següent fitxer*
 
 ![API5](https://github.com/user-attachments/assets/8ea8c162-87a1-41c6-944c-183996509954)
+
+
+![API6](https://github.com/user-attachments/assets/1564e373-2930-4106-be5e-ebc3a7c641f2)
