@@ -84,7 +84,7 @@ def verificar_formato_archivos(carpeta, archivos):
 
 def procesar_archivos_en_lotes(carpeta, archivos, batch_size=1000):
     """
-    Función que procesa los archivos por lotes, para manejar grandes cantidades de archivos.
+    Función que procesa los archivos por lotes, para manejar grandes cantidades de archivos. salida
     """
     archivos_incorrectos_totales = []
 
