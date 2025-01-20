@@ -15,9 +15,11 @@
 
 ![API4](https://github.com/user-attachments/assets/0b22bcb6-8abc-4bcf-a048-4157dd7ea2a2)
 
-*En el centre de descarrega de la pagina oficial de la AEMET es descarrega el següent fitxer*
+*En el centre de descarrega de la pagina oficial de la AEMET es descarrega el següent fitxer i s'extrau en format ZIP*
 
 ![API5](https://github.com/user-attachments/assets/8ea8c162-87a1-41c6-944c-183996509954)
 
 
 ![API6](https://github.com/user-attachments/assets/1564e373-2930-4106-be5e-ebc3a7c641f2)
+
+
