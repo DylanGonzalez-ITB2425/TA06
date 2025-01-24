@@ -65,6 +65,7 @@ Una vez procesados todos los datos los subimos a un log donde nos queda la tabla
 En esta imagen podemos ver una estadística general de todos los datos analizados:
 ![API](https://github.com/DylanGonzalez-ITB2425/TA06/blob/39362639fddfb3ddb67698bd1494f630c2dc9bb2/TA06/E02/image.png)
 
-Aqui nos muestra la cantidad de l/m2 cada año
-![API]()
+Aqui nos muestra la cantidad de l/m2 cada año:
+
+![API](https://github.com/DylanGonzalez-ITB2425/TA06/blob/65a143f1a4b66cf8222b5d4adf5ca61d994bd0d2/TA06/E02/r2.png)
 
