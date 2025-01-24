@@ -59,4 +59,8 @@ Hemos calculado las medias anuales de precipitación mediante la función **calc
 
 
 *DATOS*
+
 Una vez procesados todos los datos los subimos a un log donde nos queda la tabla correspondiente con todos los resultados analizados:
+![API]()
+![API]()
+
