@@ -36,9 +36,27 @@
 
 Al momento de procesar los datos los hemos agrupado en 17 bloques de 1.000 para hacer más rápida su lectura. A su vez también hemos agrupado los errores con el objetivo de mejorar el rendimiento del proceso. Se encapsulan las operaciones críticas dentro de bloques try-except, permitiendo manejar errores inesperados sin interrumpir el procesamiento de otros archivos o datos.
 
-
-
 Para aquellos valores nulos (-999) se han transformado, en el programa, a NONE para poder procesarlos y despúes han vuelto a su formato original.
 
 *CALCULO DE PORCENTAJES*
 
+*Se ha especificado que cuente los datos en mililitros que es el equivalente a l/m2*
+
+*Porcentaje de datos faltantes (-999):*
+
+En el script, la función **generate_statistics** cuenta los valores faltantes (marcados como -999) y los compara con el total de datos procesados. Este porcentaje se calcula como:
+Porcentaje de datos faltantes = Valores faltantes/Total de valores × 100
+
+Esto permite cuantificar la proporción de datos inválidos frente al total.
+
+*Estadísticas generales de los datos procesados:*
+
+El script genera información sobre el número total de valores, líneas procesadas y archivos analizados. Con estos datos podemos hacernos una idea del alcanze total del programa y podria también servir a la hora de identificar si se han procesado todos los archivos o no.
+
+*Medias y totales anuales:*
+
+Hemos calculado las medias anuales de precipitación mediante la función **calculate_annual_means** que agrupa los valores válidos (excluyendo -999) por año, calculando el promedio y la suma de precipitaciones para cada año. A más para que sea más sencillo de leeer los resultados los hemos ordenado cronológicamente y se presentan como una tabla en el informe.
+
+
+*DATOS*
+Una vez procesados todos los datos los subimos a un log donde nos queda la tabla correspondiente con todos los resultados analizados:
