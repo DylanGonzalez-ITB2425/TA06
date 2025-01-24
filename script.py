@@ -1,89 +1,160 @@
 import os
-import traceback
 
-def determinar_delimitador_y_columnas(archivo):
-    """
-    Función que lee las primeras dos líneas de un archivo para determinar el delimitador
-    y el número de columnas.
-    """
-    with open(archivo, 'r') as file:
-        lineas = [next(file) for _ in range(2)]  # Leer las primeras dos líneas
-        
-    # Determinar el delimitador (espacios, comas, tabulaciones)
-    delimitadores_posibles = [' ']
-    delimitador_detectado = None
-    num_columnas = None
+# Leer el archivo con formato específico
+def load_data(file_path):
+    """Carga el archivo y devuelve los datos como una lista de diccionarios."""
+    data = []
+    with open(file_path, 'r') as file:
+        lines = file.readlines()[2:]  # Ignorar las primeras dos líneas (si son encabezados)
+        for line in lines:
+            parts = line.split()
+            try:
+                record = {
+                    'ID': parts[0],
+                    'Year': int(parts[1]),
+                    'Month': int(parts[2]),
+                    'Days': [float(x) if x != '-999' else None for x in parts[3:]]
+                }
+                data.append(record)
+            except ValueError as e:
+                print(f"Error al procesar la línea: {line}. Error: {e}")
+    return data
 
-    for linea in lineas:
-        for delimitador in delimitadores_posibles:
-            columnas = linea.strip().split(delimitador)
-            if num_columnas is None:
-                num_columnas = len(columnas)
-                delimitador_detectado = delimitador
-            elif len(columnas) != num_columnas:
-                return None, None  # No es consistente con las columnas esperadas
+# Manejo de valores faltantes
+def handle_missing_values(data):
+    """Reemplaza valores faltantes o inválidos."""
+    for record in data:
+        record['Days'] = [x if x is not None else -999 for x in record['Days']]
+    return data
+
+# Estadísticas descriptivas
+def generate_statistics(data):
+    """Genera estadísticas descriptivas para los datos."""
+    total_values = 0
+    missing_values = 0
+
+    for record in data:
+        total_values += len(record['Days'])
+        missing_values += sum(1 for x in record['Days'] if x == -999)
+
+    return total_values, missing_values
+
+# Cálculo de medias anuales
+def calculate_annual_means(data):
+    """Calcula la media anual de la precipitación y devuelve una lista de años con sus medias."""
+    annual_data = {}
     
-    return delimitador_detectado, num_columnas
-
-def verificar_formato_archivos(carpeta, archivos):
-    """
-    Función que recorre todos los archivos en la carpeta, verifica que todos los archivos
-    tengan el mismo número de columnas y delimitador.
-    """
-    delimitador_global = None
-    num_columnas_global = None
-    archivos_incorrectos = []
-
-    # Procesar los archivos en lotes para evitar sobrecargar la memoria
-    for archivo in archivos:
-        archivo_completo = os.path.join(carpeta, archivo)
+    for record in data:
+        year = record['Year']
+        valid_values = [x for x in record['Days'] if x != -999]
         
-        # Verificar el delimitador y número de columnas en el archivo
-        delimitador, num_columnas = determinar_delimitador_y_columnas(archivo_completo)
+        if year not in annual_data:
+            annual_data[year] = []
         
-        if delimitador is None:
-            archivos_incorrectos.append((archivo, "Error en la detección del delimitador"))  # Si no hay consistencia, el archivo es incorrecto
-        elif delimitador_global is None and num_columnas_global is None:
-            # Primer archivo, establecer el formato global
-            delimitador_global = delimitador
-            num_columnas_global = num_columnas
-        elif delimitador != delimitador_global or num_columnas != num_columnas_global:
-            # Si el delimitador o el número de columnas no coincide, el archivo es incorrecto
-            archivos_incorrectos.append((archivo, "Error en la línea: " + str(lineas.index(linea) + 1)))
+        annual_data[year].extend(valid_values)
+    
+    annual_means = []
+    for year, values in annual_data.items():
+        if values:  # Evitar división por cero si no hay valores válidos
+            mean_precipitation = sum(values) / len(values)
+            annual_means.append((year, mean_precipitation))
+    
+    return sorted(annual_means, key=lambda x: x[0])  # Ordenar por año
 
-    return archivos_incorrectos
+# Procesar todos los archivos en una carpeta en paquetes
+def process_folder_in_batches(folder_path, batch_size=1000):
+    """Procesa los archivos en una carpeta en paquetes de tamaño especificado y genera informes."""
+    total_files = 0
+    total_lines = 0
+    total_values = 0
+    missing_values = 0
+    overall_annual_means = {}
 
-def procesar_archivos_en_lotes(carpeta, archivos, batch_size=1000):
-    """
-    Función que procesa los archivos por lotes, para manejar grandes cantidades de archivos.
-    """
-    archivos_incorrectos_totales = []
+    if not os.path.exists(folder_path):
+        print(f"La carpeta {folder_path} no existe.")
+        return
 
-    for i in range(0, len(archivos), batch_size):
-        # Procesar lotes de archivos
-        batch = archivos[i:i + batch_size]
-        archivos_incorrectos = verificar_formato_archivos(carpeta, batch)
-        archivos_incorrectos_totales.extend(archivos_incorrectos)
-        
-        # Puedes agregar un mensaje de progreso
-        print(f"Procesando lotes erroneos {i // batch_size + 1} de {len(archivos) // batch_size + 1} archivos...")
+    # Obtener todos los archivos de la carpeta
+    all_files = []
+    for root, _, files in os.walk(folder_path):
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            if os.path.isfile(file_path):
+                all_files.append(file_path)
 
-    return archivos_incorrectos_totales
+    total_batches = (len(all_files) + batch_size - 1) // batch_size  # Número total de paquetes
 
+    # Procesar los archivos en lotes
+    for batch_num in range(total_batches):
+        start_index = batch_num * batch_size
+        end_index = min(start_index + batch_size, len(all_files))
+        batch_files = all_files[start_index:end_index]
 
-# Ejemplo de uso con la ruta correcta de la carpeta
-carpeta = '/home/adria.montero.7e5/Baixades/TA06/TA06/E01/precip.MIROC5.RCP60.2006-2100.SDSM_REJ'
-archivos = os.listdir(carpeta)
+        print(f"Procesando paquete {batch_num + 1} de {total_batches}...")
 
-# Filtrar solo los archivos .dat
-archivos_dat = [archivo for archivo in archivos if archivo.endswith('.dat')]
+        for file_path in batch_files:
+            try:
+                # Procesar cada archivo
+                data = load_data(file_path)
+                data = handle_missing_values(data)
 
-# Procesar los archivos en lotes de 1000 (puedes ajustar el tamaño del lote)
-archivos_incorrectos = procesar_archivos_en_lotes(carpeta, archivos_dat, batch_size=1000)
+                file_total_values, file_missing_values = generate_statistics(data)
 
-if archivos_incorrectos:
-    print("Los siguientes archivos no están en el formato correcto:")
-    for archivo, error in archivos_incorrectos:
-        print(f"Archivo: {archivo}, Error: {error}")
-else:
-    print("Todos los archivos tienen el mismo formato.")
+                total_files += 1
+                total_lines += len(data)
+                total_values += file_total_values
+                missing_values += file_missing_values
+
+                # Calcular medias anuales por archivo
+                annual_means = calculate_annual_means(data)
+                for year, mean in annual_means:
+                    if year not in overall_annual_means:
+                        overall_annual_means[year] = []
+                    overall_annual_means[year].append(mean)
+
+            except Exception as e:
+                print(f"Error procesando el archivo {file_path}: {e}")
+
+    # Calcular la media anual combinada
+    combined_annual_means = []
+    for year, means in overall_annual_means.items():
+        combined_mean = sum(means) / len(means)
+        combined_annual_means.append((year, combined_mean))
+    combined_annual_means = sorted(combined_annual_means, key=lambda x: x[0])
+
+    # Calcular el porcentaje de valores faltantes
+    missing_percentage = (missing_values / total_values) * 100 if total_values > 0 else 0
+
+    # Informe único con todos los resultados
+    print("""
+========================================================
+ANÁLISIS DE PRECIPITACIÓN - INFORME COMPLETO
+========================================================
+
+1. ESTADÍSTICAS GENERALES
+--------------------------------------------------------
+Total de valores procesados: {total_values:,}
+Valores faltantes (-999): {missing_values:,}
+Porcentaje de datos faltantes: {missing_percentage:.2f}%
+Archivos procesados: {total_files:,}
+Líneas procesadas: {total_lines:,}
+""".format(
+        total_values=total_values,
+        missing_values=missing_values,
+        missing_percentage=missing_percentage,
+        total_files=total_files,
+        total_lines=total_lines
+    ))
+
+    # Tabla de medias anuales combinadas
+    print("\n========================================================")
+    print("MEDIAS ANUALES DE PRECIPITACIÓN")
+    print("========================================================")
+    print("{:<10} {:<15}".format("Año", "Media (mm)"))
+    print("-" * 25)
+    for year, mean in combined_annual_means:
+        print("{:<10} {:<15.2f}".format(year, mean))
+
+# Ruta de la carpeta a analizar
+carpeta = r'TA06/E01/precip.MIROC5.RCP60.2006-2100.SDSM_REJ'  # Asegúrate de que esta ruta sea correcta
+process_folder_in_batches(carpeta)
