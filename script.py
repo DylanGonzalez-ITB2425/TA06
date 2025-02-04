@@ -1,4 +1,19 @@
 import os
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+# Configuración de estilo de seaborn
+sns.set(style="whitegrid")
+
+# Verificar si el valor es numérico
+def is_number(value):
+    """Verifica si el valor es un número válido."""
+    try:
+        float(value)  # Intentar convertir a float
+        return True
+    except ValueError:
+        return False
 
 # Leer el archivo con formato específico
 def load_data(file_path):
@@ -13,7 +28,8 @@ def load_data(file_path):
                     'ID': parts[0],
                     'Year': int(parts[1]),
                     'Month': int(parts[2]),
-                    'Days': [float(x) if x != '-999' else None for x in parts[3:]]
+                    # Asegurarse de que los días sean números o None (reemplazar -999 por None)
+                    'Days': [float(x) if x != '-999' and is_number(x) else None for x in parts[3:]]
                 }
                 data.append(record)
             except ValueError as e:
@@ -43,23 +59,86 @@ def generate_statistics(data):
 def calculate_annual_means(data):
     """Calcula la media anual de la precipitación y devuelve una lista de años con sus medias."""
     annual_data = {}
-    
+
     for record in data:
         year = record['Year']
         valid_values = [x for x in record['Days'] if x != -999]
-        
+
         if year not in annual_data:
             annual_data[year] = []
-        
+
         annual_data[year].extend(valid_values)
-    
+
     annual_means = []
     for year, values in annual_data.items():
         if values:  # Evitar división por cero si no hay valores válidos
             mean_precipitation = sum(values) / len(values)
             annual_means.append((year, mean_precipitation))
-    
+
     return sorted(annual_means, key=lambda x: x[0])  # Ordenar por año
+
+# Función para generar gráficos de barras
+def plot_bar_chart(years, means):
+    plt.figure(figsize=(10, 6))
+    plt.bar(years, means, color='skyblue', edgecolor='black')
+    plt.xlabel('Año', fontsize=12)
+    plt.ylabel('Media de precipitación (mm)', fontsize=12)
+    plt.title('Medias Anuales de Precipitación', fontsize=14)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig('grafico_precipitaciones.png', dpi=300)
+
+# Gráfico de líneas
+def plot_line_chart(years, means):
+    plt.figure(figsize=(10, 6))
+    plt.plot(years, means, marker='o', linestyle='-', color='b', label='Precipitación anual')
+    plt.xlabel('Año', fontsize=12)
+    plt.ylabel('Media de precipitación (mm)', fontsize=12)
+    plt.title('Evolución de la Precipitación Anual', fontsize=14)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.grid(True)
+    plt.savefig('grafico_lineas_precipitaciones.png', dpi=300)
+
+# Gráfico de dispersión
+def plot_scatter_chart(years, means):
+    plt.figure(figsize=(10, 6))
+    plt.scatter(years, means, color='green', label='Precipitación anual')
+    plt.xlabel('Año', fontsize=12)
+    plt.ylabel('Media de precipitación (mm)', fontsize=12)
+    plt.title('Relación entre Años y Precipitación Anual', fontsize=14)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig('grafico_dispersion_precipitaciones.png', dpi=300)
+
+# Histograma
+def plot_histogram(means):
+    plt.figure(figsize=(10, 6))
+    plt.hist(means, bins=10, color='orange', edgecolor='black')
+    plt.xlabel('Media de Precipitación (mm)', fontsize=12)
+    plt.ylabel('Frecuencia', fontsize=12)
+    plt.title('Distribución de la Precipitación Anual', fontsize=14)
+    plt.tight_layout()
+    plt.savefig('histograma_precipitaciones.png', dpi=300)
+
+# Resumen estadístico
+def generate_summary_statistics(means):
+    mean_value = np.mean(means)
+    median_value = np.median(means)
+    std_deviation = np.std(means)
+    max_value = np.max(means)
+    min_value = np.min(means)
+
+    print("""
+    ========================================================
+    RESUMEN ESTADÍSTICO DE PRECIPITACIONES
+    ========================================================
+    Media: {:.2f} mm
+    Mediana: {:.2f} mm
+    Desviación estándar: {:.2f} mm
+    Máximo: {:.2f} mm
+    Mínimo: {:.2f} mm
+    """.format(mean_value, median_value, std_deviation, max_value, min_value))
 
 # Procesar todos los archivos en una carpeta en paquetes
 def process_folder_in_batches(folder_path, batch_size=1000):
@@ -68,7 +147,7 @@ def process_folder_in_batches(folder_path, batch_size=1000):
     total_lines = 0
     total_values = 0
     missing_values = 0
-    overall_annual_means = {}
+    combined_annual_means = {}  # Inicializa la variable para almacenar las medias anuales combinadas
 
     if not os.path.exists(folder_path):
         print(f"La carpeta {folder_path} no existe.")
@@ -108,19 +187,19 @@ def process_folder_in_batches(folder_path, batch_size=1000):
                 # Calcular medias anuales por archivo
                 annual_means = calculate_annual_means(data)
                 for year, mean in annual_means:
-                    if year not in overall_annual_means:
-                        overall_annual_means[year] = []
-                    overall_annual_means[year].append(mean)
+                    if year not in combined_annual_means:
+                        combined_annual_means[year] = []
+                    combined_annual_means[year].append(mean)
 
             except Exception as e:
                 print(f"Error procesando el archivo {file_path}: {e}")
 
     # Calcular la media anual combinada
-    combined_annual_means = []
-    for year, means in overall_annual_means.items():
+    final_annual_means = []
+    for year, means in combined_annual_means.items():
         combined_mean = sum(means) / len(means)
-        combined_annual_means.append((year, combined_mean))
-    combined_annual_means = sorted(combined_annual_means, key=lambda x: x[0])
+        final_annual_means.append((year, combined_mean))
+    final_annual_means = sorted(final_annual_means, key=lambda x: x[0])
 
     # Calcular el porcentaje de valores faltantes
     missing_percentage = (missing_values / total_values) * 100 if total_values > 0 else 0
@@ -152,8 +231,22 @@ Líneas procesadas: {total_lines:,}
     print("========================================================")
     print("{:<10} {:<15}".format("Año", "Media (mm)"))
     print("-" * 25)
-    for year, mean in combined_annual_means:
+    for year, mean in final_annual_means:
         print("{:<10} {:<15.2f}".format(year, mean))
+
+    # Graficar los resultados
+    years = [year for year, _ in final_annual_means]
+    means = [mean for _, mean in final_annual_means]
+
+    # Graficar todos los tipos de gráficos
+    plot_bar_chart(years, means)
+    plot_line_chart(years, means)
+    plot_scatter_chart(years, means)
+    plot_histogram(means)
+
+    # Generar el resumen estadístico
+    generate_summary_statistics(means)
+
 
 # Ruta de la carpeta a analizar
 carpeta = r'TA06/E01/precip.MIROC5.RCP60.2006-2100.SDSM_REJ'  # Asegúrate de que esta ruta sea correcta
