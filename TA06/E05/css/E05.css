@@ -1,0 +1,126 @@
+/* Estilos básicos para el cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+/* Estilos del header */
+header {
+    background-color: #2b4f6c;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Estilos del menú de navegación */
+nav {
+    background-color: #333;
+    padding: 10px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #333;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #575757;
+}
+
+/* Estilos del footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Estilos para el cuerpo principal */
+main {
+    padding: 20px;
+}
+
+/* Estilos para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #2b4f6c;
+    color: white;
+}
+
+td {
+    background-color: white;
+}
+
+.nivell {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.nivell.forca {
+    color: #5bc0de;
+}
+
+.nivell.molt {
+    color: #f39c12;
+}
+
+.nivell.poc {
+    color: #e74c3c;
+}
+
+.nivell.res {
+    color: #bdc3c7;
+}
+
+/* Estilos adicionales para la sección de introducción */
+.registre-aprenentatge {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.registre-aprenentatge h2 {
+    color: #2b4f6c;
+}
+
+.registre-aprenentatge table {
+    margin-top: 10px;
+}
+
+.registre-aprenentatge td, .registre-aprenentatge th {
+    font-size: 16px;
+    line-height: 1.6;
+}

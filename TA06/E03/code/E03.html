@@ -1,58 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta name="author" content="Lorena">
-   <meta name="description" content="X">
-   <title>Resumen Estadístico y Gráficas</title>
-   <link rel="stylesheet" href="3.css">
+   <meta name="author" content="TA06">
+   <meta name="description" content="Menú de entrada a la página web">
+   <title>MenuPronostico</title>
+   <link rel="stylesheet" href="/TA06/menu/css/menu.css">
 </head>
 
 <body>
-
-   <!-- Flecha para volver al menú principal -->
-   <a href="..//E04/index.html" class="back-to-top">
-       &#8594; <!-- Código de la flecha hacia el lado -->
-   </a>
-
    <header>
-       <h1>GRÁFICAS</h1>
+       <h1>Menú de Pronóstico Meteorológico</h1>
    </header>
+   
+   <nav>
+       <ul>
+        <li><a href="/TA06/E01/code/E01.html">E01</a></li>
+        <li><a href="/TA06/E02/code/E02.html">E02</a></li>
+        <li><a href="/TA06/E03/code/E03.html">E03</a></li>
+        <li><a href="/TA06/E04/code/E04.html">E04</a></li>
+        <li><a href="/TA06/E05/code/E05.html">E05</a></li>
+        <li><a href="/TA06/menu/code/menu.html">Menú</a></li> 
+       </ul>
+   </nav>
 
-  <!-- Párrafo explicativo para la sección de gráficas -->
-   <section id="graficas">
-       <p>
-           A continuación, mostramos las gráficas generadas a partir de los datos analizados. Estas gráficas nos proporcionan una visión clara sobre cómo se distribuyen los datos a través de diferentes representaciones visuales.
-       </p>
-   </section>
 
-   <section id="tabla">
-       <h2>TABLA</h2>
-       <div>
+   <!-- Sección de resultados -->
+   <main>
+       <section class="resultados">
+           <h2>Resultados Obtenidos</h2>
+           <p>
+               En esta sección se presentan los resultados obtenidos tras procesar y analizar los datos de precipitaciones. Se han generado estadísticas detalladas y gráficos interactivos que muestran la evolución de las precipitaciones a lo largo de los años. Además, se han realizado exportaciones a archivos para permitir un análisis más detallado fuera de esta plataforma.
+           </p>
+           <ul>
+               <li><strong>Gráficos Estadísticos:</strong> A continuación, se muestran los gráficos interactivos que representan la evolución de las precipitaciones durante el periodo estudiado.</li>
+               <li><strong>Resumen Estadístico:</strong> Se presenta un resumen con estadísticas clave como la media anual de precipitaciones, la tasa de variación anual, y los años con mayores y menores precipitaciones.</li>
+               <li><strong>Exportación de Datos:</strong> Los resultados también han sido exportados a un archivo CSV para facilitar su uso en otras herramientas y realizar un análisis más exhaustivo.</li>
+           </ul>
+           <p>
+               Los resultados mostrados incluyen tanto resúmenes estadísticos como gráficos que te permitirán visualizar la tendencia y los cambios en las precipitaciones durante el periodo de estudio.
+           </p>
 
-       </div>
-   </section>
-   <!-- Espacio para insertar imágenes relacionadas con el resumen estadístico -->
+           <!-- Aquí puedes agregar imágenes y gráficos -->
+           <div class="gráficos">
+               <img src="grafico1.png" alt="Gráfico de precipitaciones anuales">
+               <img src="grafico2.png" alt="Gráfico de tasa de variación anual">
+           </div>
+       </section>
+   </main>
 
-   <section id="imagenes-estadisticas">
-       <h2>Imágenes Representativas</h2>
-       <div>
-           <img src="ruta/a/tu/imagen1.jpg" alt="Gráfico 1" width="300">
-           <p>Gráfico 1: Análisis de las tendencias de los últimos 5 años.</p>
-       </div>
-       <div>
-           <img src="ruta/a/tu/imagen2.jpg" alt="Gráfico 2" width="300">
-           <p>Gráfico 2: Comparativa entre las categorías de datos recolectados.</p>
-       </div>
-       <div>
-           <img src="ruta/a/tu/imagen3.jpg" alt="Gráfico 3" width="300">
-           <p>Gráfico 3: Distribución de los datos por diferentes intervalos.</p>
-       </div>
-   </section>
-
+   <footer>
+       <p>&copy; 2025 Pronóstico Meteorológico | Desarrollado por [Tu Nombre]</p>
+   </footer>
 </body>
-
 </html>
-
