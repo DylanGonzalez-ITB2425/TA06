@@ -1,6 +1,5 @@
 ## Introducción
 
-uku
 ---
 ### Índice
 
