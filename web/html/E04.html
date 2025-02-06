@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="X">
+   <title>Graficos Estadisticos</title>
+   <link rel="stylesheet" href="../css/E04.css">
+   <!-- Incluir la librería Chart.js -->
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <style>
+       /* Estilo para los gráficos en línea (horizontal) */
+       #graficos {
+           display: flex;
+           justify-content: space-between;
+           gap: 10px; /* Espacio entre los gráficos */
+           flex-wrap: wrap; /* Permite que los gráficos se ajusten en pantallas pequeñas */
+       }
+       canvas {
+           width: 35% !important; /* Ocupa el 50% del espacio pero con margen */
+           height: auto !important; /* Ajusta la altura proporcionalmente */
+       }
+       h2 {
+           text-align: center; /* Centrar el título */
+           margin-bottom: 20px; /* Espacio debajo del título */
+       }
+   </style>
+</head>
+
+<body>
+
+
+   <header>
+       <h1>GRAFICOS</h1>
+   </header>
+
+   <nav>
+       <ul>
+        <li><a href="../../index.html">Menú</a></li> 
+        <li><a href="../html/E01.html">E01</a></li>
+        <li><a href="../html/E02.html">E02</a></li>
+        <li><a href="../html/E03.html">E03</a></li>
+        <li><a href="../html/E04.html">E04</a></li>
+        <li><a href="../html/E05.html">E05</a></li>
+       </ul>
+   </nav>
+
+  <!-- Párrafo explicativo para la sección de gráficas -->
+   <section id="codigos">
+       <p>
+           A continuación, mostramos los gráficos generados a partir de datos CSV.
+       </p>
+   </section>
+
+   <!-- Espacio para insertar gráficos -->
+   <section id="graficos">
+       <h2>Gráficos Estadísticos</h2>
+       <!-- Los gráficos estarán ahora en la misma línea debajo del título -->
+       <canvas id="grafico1"></canvas>
+       <canvas id="grafico2"></canvas>
+   </section>
+
+   <script>
+       // Función para cargar un archivo CSV y convertirlo en datos utilizables
+       function cargarCSV(url, callback) {
+           fetch(url)
+               .then(response => response.text())
+               .then(data => callback(data))
+               .catch(error => console.error('Error al cargar el CSV:', error));
+       }
+
+       // Función para parsear el CSV a un array de datos
+       function parseCSV(data) {
+           const filas = data.split('\n');
+           const encabezados = filas[0].split(',');
+           const datos = filas.slice(1).map(fila => {
+               const valores = fila.split(',');
+               return encabezados.reduce((obj, encabezado, i) => {
+                   obj[encabezado] = valores[i];
+                   return obj;
+               }, {});
+           });
+           return datos;
+       }
+
+       // Cargar y procesar el CSV
+       cargarCSV('../csv/precipitacion.csv', function(data) {
+           const datos = parseCSV(data);
+           const etiquetas = datos.map(d => d['Año']); // Suponiendo que tienes una columna "Año"
+           const valores = datos.map(d => parseFloat(d['Media (mm)'])); // Suponiendo que tienes una columna "Media (mm)"
+
+           // Crear gráfico de barras
+           const ctx1 = document.getElementById('grafico1').getContext('2d');
+           const grafico1 = new Chart(ctx1, {
+               type: 'bar',
+               data: {
+                   labels: etiquetas,
+                   datasets: [{
+                       label: 'Gráfico de barras',
+                       data: valores,
+                       backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                       borderColor: 'rgba(75, 192, 192, 1)',
+                       borderWidth: 1
+                   }]
+               },
+               options: {
+                   responsive: true, // Hacer que los gráficos sean responsivos
+                   scales: {
+                       y: {
+                           beginAtZero: true // Para que el eje Y empiece desde cero
+                       }
+                   }
+               }
+           });
+
+           // Crear gráfico de líneas
+           const ctx2 = document.getElementById('grafico2').getContext('2d');
+           const grafico2 = new Chart(ctx2, {
+               type: 'line',
+               data: {
+                   labels: etiquetas,
+                   datasets: [{
+                       label: 'Gráfico de líneas',
+                       data: valores,
+                       fill: false,
+                       borderColor: 'rgba(255, 99, 132, 1)',
+                       tension: 0.1
+                   }]
+               },
+               options: {
+                   responsive: true, // Hacer que los gráficos sean responsivos
+                   scales: {
+                       y: {
+                           beginAtZero: true // Para que el eje Y empiece desde cero
+                       }
+                   }
+               }
+           });
+       });
+   </script>
+
+</body>
+
+</html>

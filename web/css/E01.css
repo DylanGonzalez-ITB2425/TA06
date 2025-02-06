@@ -1,0 +1,90 @@
+/* Estilos básicos para el menú */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+header {
+    background-color: #6c4675;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+nav {
+    background-color: #333;
+    padding: 10px;
+    text-align: center; /* Centrar el contenido dentro del nav */
+    border-radius: 30px; /* Bordes circulares para el contorno del menú */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: inline-flex; /* Alinear los elementos en línea */
+    justify-content: center; /* Centrar los elementos de la lista */
+}
+
+nav ul li {
+    margin: 0 15px; /* Espaciado entre los elementos del menú */
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px; /* Espaciado interior de los enlaces */
+    background-color: transparent; /* Fondo transparente por defecto */
+    border-radius: 25px; /* Bordes redondeados en los enlaces */
+    transition: background-color 0.3s, transform 0.2s ease; /* Efecto suave de transición */
+}
+
+/* Cambio de color cuando se pasa el ratón */
+nav ul li a:hover {
+    background-color: #6c4675; /* Color morado al pasar el ratón */
+    transform: scale(1.05); /* Ligeramente agrandar el enlace al pasar el ratón */
+}
+
+/* Estilos para el enlace activo (cuando está seleccionado o activo) */
+nav ul li a:active {
+    background-color: #5a3c62; /* Color morado más oscuro cuando se hace clic */
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Estilos para la sección de introducción */
+main {
+    padding: 20px;
+}
+
+.intro {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.intro h2 {
+    color: #6c4675;
+}
+
+.intro p, .intro ul {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.intro ul {
+    margin-top: 10px;
+}

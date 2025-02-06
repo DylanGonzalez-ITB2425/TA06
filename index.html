@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="author" content="TA06">
+   <meta name="description" content="Menú de entrada a la página web">
+   <title>Inicio</title>
+   <link rel="stylesheet" href="./web/css/index.css">
+</head>
+
+<body>
+   <header>
+       <h1>Pronóstico Meteorológico</h1>
+   </header>
+   
+   <nav>
+       <ul>
+        <li><a href="./index.html">INICIO</a></li>
+        <li><a href="./web/html/E01.html">E01</a></li>
+        <li><a href="./web/html/E02.html">E02</a></li>
+        <li><a href="./web/html/E03.html">E03</a></li>
+        <li><a href="./web/html/E04.html">E04</a></li>
+        <li><a href="./web/html/E05.html">E05</a></li>
+       </ul>
+   </nav>
+
+   <main>
+      <section class="intro">
+          <h2>Introducción</h2>
+          <p>
+              Esta página web tiene como objetivo presentar un análisis detallado sobre las precipitaciones a partir de datos obtenidos de diversas fuentes meteorológicas. Para ello, se ha utilizado el modelo climático <strong>MIROC5</strong> bajo el escenario <strong>RCP60 (2006-2100)</strong>, con el fin de estudiar la evolución de las precipitaciones en un periodo extendido de tiempo.
+          </p>
+          <p>
+              El proceso de análisis se ha dividido en varias fases:
+          </p>
+          <ul>
+              <li><strong>Obtención de los datos:</strong> Se han descargado archivos desde la fuente de datos de la <a href="https://opendata.aemet.es" target="_blank">AEMET</a>, que contiene información detallada sobre las precipitaciones históricas y futuras proyectadas.</li>
+              <li><strong>Procesamiento de los datos:</strong> Los datos obtenidos han sido procesados y depurados, eliminando valores nulos o erróneos, para asegurarse de que se utilicen valores consistentes y correctos en los análisis.</li>
+              <li><strong>Generación de gráficos y estadísticas:</strong> Tras procesar los datos, se han generado estadísticas como la media anual de precipitación, la tasa de variación anual, y se han identificado los años con mayores y menores precipitaciones. Todo ello se presenta a través de gráficos interactivos y estadísticas claras.</li>
+          </ul>
+          <p>
+              En la siguiente sección podrás visualizar los gráficos estadísticos que muestran la evolución de las precipitaciones a lo largo de los años y los resultados obtenidos tras procesar los datos de forma adecuada.
+          </p>
+      </section>
+   </main>
+ 
+   <footer>
+      <p>&copy; 2025 Pronóstico Meteorológico</p>
+   </footer>
+ 
+</body>
+</html>

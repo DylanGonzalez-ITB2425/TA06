@@ -8,7 +8,7 @@ body {
 
 /* Estilos del header */
 header {
-    background-color: #2b4f6c;
+    background-color: #6c4675;
     color: white;
     text-align: center;
     padding: 20px;
@@ -18,16 +18,18 @@ header {
 nav {
     background-color: #333;
     padding: 10px;
+    text-align: center; /* Centrar el contenido dentro de nav */
 }
 
 nav ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    display: inline-flex; /* Usamos inline-flex para que los elementos estén en línea y se centren */
+    justify-content: center; /* Centrar los elementos de la lista */
 }
 
 nav ul li {
-    display: inline-block;
     margin-right: 10px;
 }
 
@@ -40,8 +42,14 @@ nav ul li a {
     transition: background-color 0.3s;
 }
 
+/* Cambiar color a morado cuando el ratón pase por encima */
 nav ul li a:hover {
-    background-color: #575757;
+    background-color: #6c4675; /* Morado claro */
+}
+
+/* Cambiar color a morado más fuerte cuando el enlace esté activo (clicado) */
+nav ul li a:active {
+    background-color: rgb(90, 23, 171); /* Morado más fuerte */
 }
 
 /* Estilos del footer */
@@ -71,6 +79,7 @@ th, td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    border: 1px solid black;
 }
 
 th {
@@ -123,4 +132,38 @@ td {
 .registre-aprenentatge td, .registre-aprenentatge th {
     font-size: 16px;
     line-height: 1.6;
+}
+
+/* Estilos para el menú desplegable circular */
+select {
+    border: none;
+    padding: 10px;
+    border-radius: 50px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+select:hover {
+    background-color: #dcdcdc;
+}
+
+option[value="res"] {
+    background-color: red;
+    color: white;
+}
+
+option[value="poc"] {
+    background-color: orange;
+    color: white;
+}
+
+option[value="forca"] {
+    background-color: yellow;
+    color: black;
+}
+
+option[value="molt"] {
+    background-color: green;
+    color: white;
 }
