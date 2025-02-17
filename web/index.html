@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Consum d'Aigua</title>
+    <link rel="stylesheet" href="/html/infografia.html">
+</head>
+<body>
+    <div class="calculator">
+        <h1>Calculadora de Consum d'Aigua</h1>
+
+        <div class="form-section">
+            <h2>Consum d'Aigua en el Pròxim Any</h2>
+            <label for="min_aigua">Mínim Aigua (L)</label>
+            <input type="number" id="min_aigua" value="180">
+            
+            <label for="max_aigua">Màxim Aigua (L)</label>
+            <input type="number" id="max_aigua" value="301">
+
+            <label for="dies">Dies de Cicle (365 dies)</label>
+            <input type="number" id="dies" value="365">
+
+            <label for="tipus_dia">Tipus de Dia</label>
+            <select id="tipus_dia">
+                <option value="laborable">Dia Laborable (8 AM - 7 PM)</option>
+                <option value="cap_de_setmana">Cap de Setmana</option>
+            </select>
+
+            <button onclick="calcularConsum()">Calcular Consum d'Aigua</button>
+        </div>
+
+        <div id="resultat" class="resultat">
+            <h3>Consum Estimat d'Aigua</h3>
+            <p id="total_consum"></p>
+            <p id="diferencia"></p>
+        </div>
+    </div>
+
+    <script src="/infografia.js"></script>
+</body>
+</html>
